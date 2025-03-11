@@ -13,7 +13,7 @@ export function SubmitButton({
 
   return (
     <Button type="submit" aria-disabled={pending} {...props}>
-      {pending ? <Loader /> : children}
+      {pending ? <Loader className="animate-spin" /> : children}
     </Button>
   );
 }
