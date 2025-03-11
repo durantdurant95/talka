@@ -17,7 +17,9 @@ export const signUpAction = async (formData: FormData): Promise<void> => {
     return;
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await (
+    await supabase
+  ).auth.signUp({
     email,
     password,
     options: {
@@ -41,7 +43,9 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error } = await (
+    await supabase
+  ).auth.signInWithPassword({
     email,
     password,
   });
@@ -64,7 +68,9 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect("error", "/forgot-password", "Email is required");
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { error } = await (
+    await supabase
+  ).auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
   });
 
@@ -101,7 +107,9 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect("error", "/reset-password", "Passwords do not match");
   }
 
-  const { error } = await supabase.auth.updateUser({
+  const { error } = await (
+    await supabase
+  ).auth.updateUser({
     password: password,
   });
 
@@ -114,6 +122,6 @@ export const resetPasswordAction = async (formData: FormData) => {
 
 export const signOutAction = async () => {
   const supabase = createClient();
-  await supabase.auth.signOut();
+  await (await supabase).auth.signOut();
   redirect("/sign-in");
 };
