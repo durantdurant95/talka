@@ -25,6 +25,7 @@ export default function RootLayout({
       lang="en"
       className={cn(figtree.variable, "dark")}
       style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
     >
       <body cz-shortcut-listen="true">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
