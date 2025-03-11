@@ -5,7 +5,18 @@ import { Label } from "@/components/ui/label";
 import { signInAction } from "@/db/auth-actions";
 import Link from "next/link";
 
-export default function Login({ searchParams }: { searchParams: Message }) {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function SigninPage(props: {
+  searchParams: SearchParams;
+}) {
+  const searchParams = await props.searchParams;
+
+  // Create a properly formatted Message object
+  const formMessage: Message | null = searchParams.message
+    ? { message: searchParams.message as string }
+    : null;
+
   return (
     <form className="flex-1 max-w-96 pt-4 md:pt-8 lg:pt-16 mx-auto w-full px-4">
       <h1 className="text-2xl font-medium">Sign in</h1>
@@ -34,7 +45,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
           required
         />
         <SubmitButton formAction={signInAction}>Sign in</SubmitButton>
-        <FormMessage message={searchParams} />
+        {formMessage && <FormMessage message={formMessage} />}
       </div>
     </form>
   );

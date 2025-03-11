@@ -5,11 +5,23 @@ import { Label } from "@/components/ui/label";
 import { signUpAction } from "@/db/auth-actions";
 import Link from "next/link";
 
-export default function Signup({ searchParams }: { searchParams: Message }) {
-  if ("message" in searchParams) {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function SignupPage(props: {
+  searchParams: SearchParams;
+}) {
+  const searchParams = await props.searchParams;
+
+  // Create a properly formatted Message object
+  const formMessage: Message | null = searchParams.message
+    ? { message: searchParams.message as string }
+    : null;
+
+  // Check if we should show the full-screen message
+  if (formMessage) {
     return (
       <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-        <FormMessage message={searchParams} />
+        <FormMessage message={formMessage} />
       </div>
     );
   }
@@ -35,7 +47,6 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
           required
         />
         <SubmitButton formAction={signUpAction}>Sign up</SubmitButton>
-        <FormMessage message={searchParams} />
       </div>
     </form>
   );

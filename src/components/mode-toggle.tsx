@@ -11,7 +11,7 @@ export function ModeToggle() {
   // Set default theme to dark on component mount
   useEffect(() => {
     setTheme("dark");
-  }, []);
+  }, [setTheme]);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
