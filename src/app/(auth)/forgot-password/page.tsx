@@ -5,11 +5,18 @@ import { Label } from "@/components/ui/label";
 import { forgotPasswordAction } from "@/db/auth-actions";
 import Link from "next/link";
 
-export default function ForgotPassword({
-  searchParams,
-}: {
-  searchParams: Message;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function ForgotPasswordPage(props: {
+  searchParams: SearchParams;
 }) {
+  const searchParams = await props.searchParams;
+
+  // Create a properly formatted Message object
+  const formMessage: Message | null = searchParams.message
+    ? { message: searchParams.message as string }
+    : null;
+
   return (
     <form className="flex-1 max-w-96 pt-4 md:pt-8 lg:pt-16 mx-auto w-full px-4">
       <div>
@@ -27,7 +34,7 @@ export default function ForgotPassword({
         <SubmitButton formAction={forgotPasswordAction}>
           Reset Password
         </SubmitButton>
-        <FormMessage message={searchParams} />
+        {formMessage && <FormMessage message={formMessage} />}
       </div>
     </form>
   );
